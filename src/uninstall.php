@@ -3,10 +3,10 @@
  * Fired when the plugin is uninstalled.
  *
  * @package   Embed_Webmap
- * @author    Gavin Rehkemper <gavreh@gmail.com>
+ * @author    Gavin Rehkemper <gavin@gavinr.com>
  * @license   GPL-2.0+
  * @link      http://gavinr.com/embed-webmap-plugin
- * @copyright 2014 Gavin Rehkemper
+ * @copyright 2016 Gavin Rehkemper
  */
 
 // If uninstall not called from WordPress, then exit

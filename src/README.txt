@@ -1,10 +1,10 @@
 === Embed Webmap ===
 Contributors: gavinr
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=gavreh%40gmail%2ecom&lc=US&item_name=Gavin%20Rehkemper&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest
+Donate link: https://www.gavinr.com/donate
 Tags: maps, gis, arcgis, webmap
 Requires at least: 3.5.1
-Tested up to: 3.6
-Stable tag: 1.0.0
+Tested up to: 4.9
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,10 +79,25 @@ File issues on the github page: https://github.com/gavreh/embed-webmap. Also, yo
 
 == Changelog ==
 
+= 2.0.1 =
+* 2017-11-09
+* Supports WordPress 4.9
+
+= 2.0 =
+* 2016-04-10
+* Updating to work with WordPress 4.5
+* 'description' and 'basemaps' are now depricated. See the readme for alternatives. They should still work in this version but may not in the future.
+* New shortcode options! Added 'searchextent', 'basemap_toggle', 'alt_basemap', 'basemap_gallery', 'disable_scroll', 'details' options.
+* Misc code cleanup.
+
 = 1.0 =
+* 2014-08-08
 * Initial Release
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+This version adds some features, and two options are now deprecated. Please see the changelog for more information.
 
 = 1.0 =
 First stable release
@@ -97,7 +112,15 @@ First stable release
 * **home** - Include a home button. If this is included, the zoom buttons will automatically be included. Example: [webmap id="52475e6edb18471780858627b40460c2" home]
 * **scale** - Include a scale bar. Example: [webmap scale id="52475e6edb18471780858627b40460c2"]
 * **legend** - Include a legend button. Example: [webmap id="52475e6edb18471780858627b40460c2" legend]
-* **description** - display a details button on the map. Example: [webmap  description]
 * **search** - Include a location search textbox. Example: [webmap id="52475e6edb18471780858627b40460c2" search]
-* **basemaps** - Include a basemaps switch button/menu. Example: [webmap id="52475e6edb18471780858627b40460c2" basemaps]
+* **searchextent** - When using 'search' (above), only search the current extent. Example: [webmap id="52475e6edb18471780858627b40460c2" search searchextent]
+* **basemap_toggle** - Show a basemap toggle. Must also include 'alt_basemap' to indicate alternate basemap that will show when the toggle button is clicked. Example: [webmap id="52475e6edb18471780858627b40460c2" basemap_toggle alt_basemap="streets"]
+* **basemap_gallery** - Include a basemap menu. [webmap id="52475e6edb18471780858627b40460c2" basemap_gallery]
 * **view-larger-link** - Include a link below the map to view the map in a larger window. Example: [webmap id="52475e6edb18471780858627b40460c2" view-larger-link]
+* **disable_scroll** - When the mouse is over the map, the scroll will not zoom the map if this is added. Example: [webmap id="52475e6edb18471780858627b40460c2" disable_scroll]
+* **details** - Show the map details pane. Example: [webmap id="52475e6edb18471780858627b40460c2" details]
+
+Depricated Options:
+
+* **description** - DEPRICATED. PLEASE USE 'DETAILS' INSTEAD.
+* **basemaps** - DEPRICATED. PLEASE USE BASEMAP_GALLERY INSTEAD.

@@ -3,10 +3,10 @@
  * Plugin Name.
  *
  * @package   Embed_Webmap
- * @author    Gavin Rehkemper <gavreh@gmail.com>
+ * @author    Gavin Rehkemper <gavin@gavinr.com>
  * @license   GPL-2.0+
  * @link      http://gavinr.com/embed-webmap-plugin
- * @copyright 2014 Gavin Rehkemper
+ * @copyright 2016 Gavin Rehkemper
  */
 
 /**
@@ -15,7 +15,7 @@
  *
  *
  * @package Embed_Webmap
- * @author  Gavin Rehkemper <gavreh@gmail.com>
+ * @author  Gavin Rehkemper <gavin@gavinr.com>
  */
 class Embed_Webmap {
 
@@ -26,7 +26,7 @@ class Embed_Webmap {
 	 *
 	 * @var     string
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '2.0.0';
 
 	/**
 	 *
@@ -65,10 +65,6 @@ class Embed_Webmap {
 
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
-
-		// Load public-facing style sheet and JavaScript.
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		add_shortcode('webmap', array($this, 'webmap_function'));
 
@@ -251,24 +247,6 @@ class Embed_Webmap {
 		load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
 	}
 
-	/**
-	 * Register and enqueue public-facing style sheet.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
-	}
-
-	/**
-	 * Register and enqueues public-facing JavaScript files.
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
-	}
-
 	private static function get_html_attr($shortcodes, $htmlAttrName) {
 		if($shortcodes[$htmlAttrName] !== '') {
 			return ' ' . $htmlAttrName . '="' . $shortcodes[$htmlAttrName] . '"';
@@ -277,82 +255,78 @@ class Embed_Webmap {
 		}
 	}
 
-	private static function get_query_string_item($shortcodes, $queryStringItemName) {
-		if($shortcodes[$queryStringItemName] !== '') {
-			return '&amp;' . $queryStringItemName . '=' . $shortcodes[$queryStringItemName] . '';
-		} else {
-			return '';
-		}
-	}
-
-	private static function get_query_string_true( $queryStringItemName) {
-		// todo - do some erro checking here
-		return '&amp;' . $queryStringItemName . '=true';
-	}
-
-	// [webmap id="a72b0766aea04b48bf7a0e8c27ccc007" extent="-155.6006,6.5161,-42.1338,61.7856"]
-	public function webmap_function( $atts) {
+	public function webmap_function($atts) {
 		$viewLargerLinkString = '';
 		$shortcodes = shortcode_atts( array(
 			'id' => 'a72b0766aea04b48bf7a0e8c27ccc007',
 			'width' => '100%', // default 100% because most blogs will want this
 			'height' => '',
-			'extent' => ''
+			'extent' => '',
+			'theme' => 'light',
+			'alt_basemap' => ''
 		), $atts );
 
 		$width = self::get_html_attr($shortcodes, 'width');
 		$height = self::get_html_attr($shortcodes, 'height');
 
-		$extent = self::get_query_string_item($shortcodes, 'extent'); // will get overridden later if we're using embed.html
+		$baseUrl = 'https://www.arcgis.com/apps/Embed/index.html';
 
+		// defaults:
+		$queryString = array(
+			'webmap'=> $shortcodes['id'],
+			'extent'=> $shortcodes['extent'],
+			'theme' => $shortcodes['theme'],
+			'zoom'=>'false',
+			'scale'=>'false',
+			'disable_scroll'=>'false'
+		);
 
-		// Find out if we can use embedViewer or if we need to use embed.html
-		$alternateUrl = FALSE;
-		$baseUrl = 'http://www.arcgis.com/home/webmap/embedViewer.html';
 		if($atts !== '') {
-			foreach ($atts as $key => $value) {
-				if(is_numeric($key)) {
-					if($value == 'legend' || $value == 'description' || $value == 'search' || $value == 'basemaps') {
-						$baseUrl = 'http://www.arcgis.com/home/webmap/templates/OnePane/basicviewer/embed.html';
-						$alternateUrl = TRUE;
-					}
-				}
-			}
-
-			// we now know which url we need to use (embedViewer.html or basicviewer/embed.html)
-			// if we are using embed.html, we must rename many of the properties
-			if($alternateUrl === TRUE) {
-				$shortcodes['gcsextent'] = $shortcodes['extent'];
-				unset($shortcodes['extent']);
-				$extent = self::get_query_string_item($shortcodes, 'gcsextent');
-
-				foreach ($atts as $key => $value) {
-					if ($value == "legend") {
-						$atts[$key] = "displaylegend";
-					} else if ($value == "description") {
-						$atts[$key] = "displaydetails";
-					} else if ($value == "search") {
-						$atts[$key] = "displaysearch";
-					} else if ($value == "basemaps") {
-						$atts[$key] = "displaybasemaps";
-					}  else if ($value == "zoom") {
-						$atts[$key] = "displayslider";
-					} else if ($value == "scale") {
-						$atts[$key] = "displayscalebar";
-					} 
-
-				}
-			}
-
-			// Build the querystring
-			foreach ($atts as $key => $value) {
-				if(is_numeric($key) && $value !== 'view-larger-link') {
-					$booleanAttrs .= self::get_query_string_true($value);
+			// override the defaults and add to the querystring if we've added a 'keyword'
+			foreach($atts as $key => $value) {
+				if(is_numeric($key)  && $value !== 'view-larger-link') {
+					$queryString[$value] = 'true';
 				} else if(is_numeric($key) && $value === 'view-larger-link') {
-					$viewLargerLinkString = '<br /><small><a href="http://www.arcgis.com/home/webmap/viewer.html?webmap=' . $shortcodes['id'] . '" style="text-align:left" target="_blank">View larger map</a></small>';
+					$viewLargerLinkString = '<br /><small><a href="' . $baseUrl . '?webmap=' . $shortcodes['id'] . '" style="text-align:left" target="_blank">View larger map</a></small>';
 				}
+
 			}
 		}
-		return '<iframe class="webmap-widget-map"' . $width . $height . ' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="' . $baseUrl . '?webmap=' . $shortcodes['id'] . $extent . $booleanAttrs . '"></iframe>' . $viewLargerLinkString;
+
+		// if we have basemap toggle, add the alt_basemap
+		if ($queryString['basemap_toggle'] == 'true') {
+			if ($shortcodes['alt_basemap'] == '') {
+				$queryString['alt_basemap'] = 'topo'; // default
+			} else {
+				$queryString['alt_basemap'] = $shortcodes['alt_basemap'];
+			}
+		}
+
+		// SPECIAL FIXES ---------------------------------
+
+		// If HOME is selected, ZOOM must also be selected.
+		if ($queryString['home'] == 'true') {
+			$queryString['zoom'] = 'true';
+		}
+
+		// Version 1.0 supported 'basemaps' as an option - This would show the "basemap gallery". 
+		// Since things have changed to be basemap_toggle or basemap_gallery, lets support that old style.
+		if ($queryString['basemaps'] == 'true') {
+			$queryString['basemap_gallery'] = 'true';
+			$queryString['basemap_toggle'] = 'false';
+		}
+
+		// Version 1.0 supported 'description' as an option - This would show the new "details"
+		if ($queryString['description'] == 'true') {
+			$queryString['details'] = 'true';
+		}
+
+		// If basemap_toggle is selected, we should have 'alt_basemap'
+		if ($queryString['basemap_toggle'] == 'true' && !array_key_exists('alt_basemap', $queryString)) {
+			$queryString['alt_basemap'] = 'topo';
+		}
+		// END SPECIAL FIXES ---------------------------------
+
+		return '<iframe class="webmap-widget-map"' . $width . $height . ' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="' . $baseUrl . '?' . http_build_query($queryString) . '"></iframe>' . $viewLargerLinkString;
 	}
 }
