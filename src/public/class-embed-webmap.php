@@ -266,6 +266,8 @@ class Embed_Webmap {
 			'alt_basemap' => ''
 		), $atts );
 
+		$shortcodes = array_map( 'esc_attr', $shortcodes );
+
 		$width = self::get_html_attr($shortcodes, 'width');
 		$height = self::get_html_attr($shortcodes, 'height');
 
