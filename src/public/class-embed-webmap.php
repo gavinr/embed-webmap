@@ -263,7 +263,8 @@ class Embed_Webmap {
 			'height' => '',
 			'extent' => '',
 			'theme' => 'light',
-			'alt_basemap' => ''
+			'alt_basemap' => '',
+			'larger_text' => __( 'View larger map', 'embed-webmap' )
 		), $atts );
 
 		$shortcodes = array_map( 'esc_attr', $shortcodes );
@@ -289,7 +290,7 @@ class Embed_Webmap {
 				if ( is_numeric( $key )  && 'view-larger-link' !== $value ) {
 					$queryString[$value] = 'true';
 				} elseif ( is_numeric( $key ) && 'view-larger-link' === $value ) {
-					$viewLargerLinkString = '<br /><small><a href="' . $baseUrl . '?webmap=' . $shortcodes['id'] . '" style="text-align:left" target="_blank">View larger map</a></small>';
+					$viewLargerLinkString = '<br /><small><a href="' . $baseUrl . '?webmap=' . $shortcodes['id'] . '" style="text-align:left" target="_blank">' . $shortcodes['larger_text'] . '</a></small>';
 				}
 
 			}
