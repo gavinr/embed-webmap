@@ -248,7 +248,7 @@ class Embed_Webmap {
 	}
 
 	private static function get_html_attr( $shortcodes, $htmlAttrName ) {
-		if ( $shortcodes[$htmlAttrName] !== '' ) {
+		if ( '' !== $shortcodes[$htmlAttrName] ) {
 			return ' ' . $htmlAttrName . '="' . $shortcodes[$htmlAttrName] . '"';
 		} else {
 			return '';
@@ -283,12 +283,12 @@ class Embed_Webmap {
 			'disable_scroll'=>'false'
 		);
 
-		if ( $atts !== '' ) {
+		if ( '' !== $atts ) {
 			// override the defaults and add to the querystring if we've added a 'keyword'
 			foreach ( $atts as $key => $value ) {
-				if ( is_numeric( $key )  && $value !== 'view-larger-link' ) {
+				if ( is_numeric( $key )  && 'view-larger-link' !== $value ) {
 					$queryString[$value] = 'true';
-				} elseif ( is_numeric( $key ) && $value === 'view-larger-link' ) {
+				} elseif ( is_numeric( $key ) && 'view-larger-link' === $value ) {
 					$viewLargerLinkString = '<br /><small><a href="' . $baseUrl . '?webmap=' . $shortcodes['id'] . '" style="text-align:left" target="_blank">View larger map</a></small>';
 				}
 
@@ -296,8 +296,8 @@ class Embed_Webmap {
 		}
 
 		// if we have basemap toggle, add the alt_basemap
-		if ( $queryString['basemap_toggle'] == 'true' ) {
-			if ( $shortcodes['alt_basemap'] == '' ) {
+		if ( 'true' == $queryString['basemap_toggle'] ) {
+			if ( '' == $shortcodes['alt_basemap'] ) {
 				$queryString['alt_basemap'] = 'topo'; // default
 			} else {
 				$queryString['alt_basemap'] = $shortcodes['alt_basemap'];
@@ -307,24 +307,24 @@ class Embed_Webmap {
 		// SPECIAL FIXES ---------------------------------
 
 		// If HOME is selected, ZOOM must also be selected.
-		if ( $queryString['home'] == 'true' ) {
+		if ( 'true' == $queryString['home'] ) {
 			$queryString['zoom'] = 'true';
 		}
 
 		// Version 1.0 supported 'basemaps' as an option - This would show the "basemap gallery".
 		// Since things have changed to be basemap_toggle or basemap_gallery, lets support that old style.
-		if ( $queryString['basemaps'] == 'true' ) {
+		if ( 'true' == $queryString['basemaps'] ) {
 			$queryString['basemap_gallery'] = 'true';
 			$queryString['basemap_toggle'] = 'false';
 		}
 
 		// Version 1.0 supported 'description' as an option - This would show the new "details"
-		if ( $queryString['description'] == 'true' ) {
+		if ( 'true' == $queryString['description'] ) {
 			$queryString['details'] = 'true';
 		}
 
 		// If basemap_toggle is selected, we should have 'alt_basemap'
-		if ( $queryString['basemap_toggle'] == 'true' && ! array_key_exists( 'alt_basemap', $queryString ) ) {
+		if ( 'true' == $queryString['basemap_toggle'] && ! array_key_exists( 'alt_basemap', $queryString ) ) {
 			$queryString['alt_basemap'] = 'topo';
 		}
 		// END SPECIAL FIXES ---------------------------------
