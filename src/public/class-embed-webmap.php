@@ -329,6 +329,6 @@ class Embed_Webmap {
 		}
 		// END SPECIAL FIXES ---------------------------------
 
-		return '<iframe class="webmap-widget-map"' . $width . $height . ' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="' . $baseUrl . '?' . http_build_query($queryString) . '"></iframe>' . $viewLargerLinkString;
+		return '<iframe class="webmap-widget-map"' . $width . $height . ' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="' . $baseUrl . '?' . http_build_query( $queryString ) . '"></iframe>' . $viewLargerLinkString;
 	}
 }
