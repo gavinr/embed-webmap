@@ -30,13 +30,4 @@ if ( ! defined( 'WPINC' ) ) {
 
 require_once( plugin_dir_path( __FILE__ ) . 'public/class-embed-webmap.php' );
 
-/*
- *
- * - replace Embed_Webmap with the name of the class defined in
- *   `class-plugin-name.php`
- */
-register_activation_hook( __FILE__, array( 'Embed_Webmap', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Embed_Webmap', 'deactivate' ) );
-
-
 add_action( 'plugins_loaded', array( 'Embed_Webmap', 'get_instance' ) );
