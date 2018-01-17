@@ -4,7 +4,7 @@ Donate link: https://www.gavinr.com/donate
 Tags: maps, gis, arcgis, webmap
 Requires at least: 3.5.1
 Tested up to: 4.9
-Stable tag: 2.0.1
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,15 @@ File issues on the github page: https://github.com/gavreh/embed-webmap. Also, yo
 
 
 == Changelog ==
+
+= 2.0.3 =
+* 2018-01-18
+* Sanitize shortcode parameters
+* Localize 'View larger map' string
+
+= 2.0.2 =
+* 2018-01-14
+* Removed unnecessary activation/deactivation/uninstall of the widget. https://github.com/gavinr/embed-webmap/issues/1
 
 = 2.0.1 =
 * 2017-11-09

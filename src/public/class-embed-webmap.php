@@ -6,7 +6,7 @@
  * @author    Gavin Rehkemper <gavin@gavinr.com>
  * @license   GPL-2.0+
  * @link      http://gavinr.com/embed-webmap-plugin
- * @copyright 2016 Gavin Rehkemper
+ * @copyright 2018 Gavin Rehkemper
  */
 
 /**
@@ -26,7 +26,7 @@ class Embed_Webmap {
 	 *
 	 * @var     string
 	 */
-	const VERSION = '2.0.0';
+	const VERSION = '2.0.3';
 
 	/**
 	 *
