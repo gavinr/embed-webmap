@@ -63,8 +63,7 @@ class Embed_Webmap {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		add_shortcode('webmap', array($this, 'webmap_function'));
-
+		add_shortcode( 'webmap', array( $this, 'webmap_function' ) );
 	}
 
 	/**
@@ -109,15 +108,15 @@ class Embed_Webmap {
 		load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
 	}
 
-	private static function get_html_attr($shortcodes, $htmlAttrName) {
-		if($shortcodes[$htmlAttrName] !== '') {
+	private static function get_html_attr( $shortcodes, $htmlAttrName ) {
+		if ( '' !== $shortcodes[$htmlAttrName] ) {
 			return ' ' . $htmlAttrName . '="' . $shortcodes[$htmlAttrName] . '"';
 		} else {
 			return '';
 		}
 	}
 
-	public function webmap_function($atts) {
+	public function webmap_function( $atts ) {
 		$viewLargerLinkString = '';
 		$shortcodes = shortcode_atts( array(
 			'id' => 'a72b0766aea04b48bf7a0e8c27ccc007',
@@ -125,11 +124,14 @@ class Embed_Webmap {
 			'height' => '',
 			'extent' => '',
 			'theme' => 'light',
-			'alt_basemap' => ''
+			'alt_basemap' => '',
+			'larger_text' => __( 'View larger map', 'embed-webmap' )
 		), $atts );
 
-		$width = self::get_html_attr($shortcodes, 'width');
-		$height = self::get_html_attr($shortcodes, 'height');
+		$shortcodes = array_map( 'esc_attr', $shortcodes );
+
+		$width = self::get_html_attr( $shortcodes, 'width' );
+		$height = self::get_html_attr( $shortcodes, 'height' );
 
 		$baseUrl = 'https://www.arcgis.com/apps/Embed/index.html';
 
@@ -143,21 +145,21 @@ class Embed_Webmap {
 			'disable_scroll'=>'false'
 		);
 
-		if($atts !== '') {
+		if ( '' !== $atts ) {
 			// override the defaults and add to the querystring if we've added a 'keyword'
-			foreach($atts as $key => $value) {
-				if(is_numeric($key)  && $value !== 'view-larger-link') {
+			foreach ( $atts as $key => $value ) {
+				if ( is_numeric( $key )  && 'view-larger-link' !== $value ) {
 					$queryString[$value] = 'true';
-				} else if(is_numeric($key) && $value === 'view-larger-link') {
-					$viewLargerLinkString = '<br /><small><a href="' . $baseUrl . '?webmap=' . $shortcodes['id'] . '" style="text-align:left" target="_blank">View larger map</a></small>';
+				} elseif ( is_numeric( $key ) && 'view-larger-link' === $value ) {
+					$viewLargerLinkString = '<br /><small><a href="' . $baseUrl . '?webmap=' . $shortcodes['id'] . '" style="text-align:left" target="_blank">' . $shortcodes['larger_text'] . '</a></small>';
 				}
 
 			}
 		}
 
 		// if we have basemap toggle, add the alt_basemap
-		if ($queryString['basemap_toggle'] == 'true') {
-			if ($shortcodes['alt_basemap'] == '') {
+		if ( 'true' == $queryString['basemap_toggle'] ) {
+			if ( '' == $shortcodes['alt_basemap'] ) {
 				$queryString['alt_basemap'] = 'topo'; // default
 			} else {
 				$queryString['alt_basemap'] = $shortcodes['alt_basemap'];
@@ -167,28 +169,28 @@ class Embed_Webmap {
 		// SPECIAL FIXES ---------------------------------
 
 		// If HOME is selected, ZOOM must also be selected.
-		if ($queryString['home'] == 'true') {
+		if ( 'true' == $queryString['home'] ) {
 			$queryString['zoom'] = 'true';
 		}
 
-		// Version 1.0 supported 'basemaps' as an option - This would show the "basemap gallery". 
+		// Version 1.0 supported 'basemaps' as an option - This would show the "basemap gallery".
 		// Since things have changed to be basemap_toggle or basemap_gallery, lets support that old style.
-		if ($queryString['basemaps'] == 'true') {
+		if ( 'true' == $queryString['basemaps'] ) {
 			$queryString['basemap_gallery'] = 'true';
 			$queryString['basemap_toggle'] = 'false';
 		}
 
 		// Version 1.0 supported 'description' as an option - This would show the new "details"
-		if ($queryString['description'] == 'true') {
+		if ( 'true' == $queryString['description'] ) {
 			$queryString['details'] = 'true';
 		}
 
 		// If basemap_toggle is selected, we should have 'alt_basemap'
-		if ($queryString['basemap_toggle'] == 'true' && !array_key_exists('alt_basemap', $queryString)) {
+		if ( 'true' == $queryString['basemap_toggle'] && ! array_key_exists( 'alt_basemap', $queryString ) ) {
 			$queryString['alt_basemap'] = 'topo';
 		}
 		// END SPECIAL FIXES ---------------------------------
 
-		return '<iframe class="webmap-widget-map"' . $width . $height . ' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="' . $baseUrl . '?' . http_build_query($queryString) . '"></iframe>' . $viewLargerLinkString;
+		return '<iframe class="webmap-widget-map"' . $width . $height . ' frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="' . $baseUrl . '?' . http_build_query( $queryString ) . '"></iframe>' . $viewLargerLinkString;
 	}
 }
