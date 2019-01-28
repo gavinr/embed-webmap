@@ -3,8 +3,8 @@ Contributors: gavinr
 Donate link: https://www.gavinr.com/donate
 Tags: maps, gis, arcgis, webmap
 Requires at least: 3.5.1
-Tested up to: 4.9
-Stable tag: 2.0.3
+Tested up to: 5.0
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ File issues on the github page: https://github.com/gavreh/embed-webmap. Also, yo
 
 
 == Changelog ==
+
+= 2.0.4 =
+* 2019-01-27
+* Fixing bug where on some servers the widget would not show.
 
 = 2.0.3 =
 * 2018-01-18

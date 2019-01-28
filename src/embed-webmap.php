@@ -1,16 +1,16 @@
 <?php
 /**
  * @package   Embed_Webmap
- * @author    Gavin Rehkemper <gavreh@gmail.com>
+ * @author    Gavin Rehkemper <gavin@gavinr.com>
  * @license   GPL-2.0+
  * @link      http://gavinr.com/embed-webmap-plugin
- * @copyright 2018 Gavin Rehkemper
+ * @copyright 2019 Gavin Rehkemper
  *
  * @wordpress-plugin
  * Plugin Name:       Embed Webmap
  * Plugin URI:        http://gavinr.com/embed-webmap-plugin
  * Description:       Embed a public webmap from ArcGIS Online into WordPress with a shortcode. http://gavinr.com/embed-webmap-plugin for help and details.
- * Version:           2.0.3
+ * Version:           2.0.4
  * Author:            Gavin Rehkemper
  * Author URI:        http://gavinr.com
  * Text Domain:       embed-webmap-en

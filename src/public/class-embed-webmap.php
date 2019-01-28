@@ -6,7 +6,7 @@
  * @author    Gavin Rehkemper <gavin@gavinr.com>
  * @license   GPL-2.0+
  * @link      http://gavinr.com/embed-webmap-plugin
- * @copyright 2018 Gavin Rehkemper
+ * @copyright 2019 Gavin Rehkemper
  */
 
 /**
@@ -142,7 +142,11 @@ class Embed_Webmap {
 			'theme' => $shortcodes['theme'],
 			'zoom'=>'false',
 			'scale'=>'false',
-			'disable_scroll'=>'false'
+			'disable_scroll'=>'false',
+			'basemap_gallery'=>'false',
+			'basemap_toggle'=>'false',
+			'basemaps'=>'false',
+			'description'=>'false'
 		);
 
 		if ( '' !== $atts ) {
